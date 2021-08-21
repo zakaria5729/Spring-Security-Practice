@@ -1,6 +1,6 @@
-package com.examplesecurity.demo.student;
+package com.examplesecurity.demo.controllers;
 
-import org.springframework.security.access.prepost.PreAuthorize;
+import com.examplesecurity.demo.models.Student;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +11,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/students")
-//@PreAuthorize("hasRole('ROLE_STUDENT')")
 public class StudentController {
 
     private static final List<Student> STUDENTS = Arrays.asList(

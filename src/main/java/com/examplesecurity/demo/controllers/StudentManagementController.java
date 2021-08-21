@@ -1,5 +1,6 @@
-package com.examplesecurity.demo.student;
+package com.examplesecurity.demo.controllers;
 
+import com.examplesecurity.demo.models.Student;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
