@@ -2,6 +2,7 @@ package com.examplesecurity.demo.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.concurrent.TimeUnit;
 
@@ -33,16 +35,26 @@ public class ApplicationWebSecurity extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/", "/css/*", "/js/*").permitAll()
-                .antMatchers("/api/**").hasRole(STUDENT.name()).anyRequest()
+                .antMatchers("/api/**").hasRole(STUDENT.name())
+                .anyRequest()
                 .authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login").permitAll()
-                .defaultSuccessUrl("/courses", true)
+                    .loginPage("/login").permitAll()
+                    .loginProcessingUrl("/login")
+                    .defaultSuccessUrl("/courses", true)
                 .and()
                 .rememberMe()
-                .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(21)) //default 2 weeks
-                .key("remember_me_token_generation_key");
+                    .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(28)) //default was 2 weeks
+                    .key("remember_me_token_generation_key_for_good_practice")
+                .and()
+                .logout()
+                    .logoutUrl("/signout")
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/signout", HttpMethod.GET.name())) //if your enable csrf protection then remove this line
+                    .clearAuthentication(true)
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID", "remember-me")
+                    .logoutSuccessUrl("/login");
     }
 
     @Bean
