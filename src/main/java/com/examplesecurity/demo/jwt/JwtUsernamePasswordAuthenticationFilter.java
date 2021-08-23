@@ -31,7 +31,8 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
         try {
             UsernamePasswordAuthenticationRequest authenticationRequest = new ObjectMapper().readValue(request.getInputStream(), UsernamePasswordAuthenticationRequest.class);
             Authentication authentication = new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-            return authenticationManager.authenticate(authentication);
+            Authentication authenticate = authenticationManager.authenticate(authentication);
+            return authenticate;
         } catch (IOException exception) {
             exception.printStackTrace();
             throw new RuntimeException(exception);
@@ -40,7 +41,7 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        String jwtKey = "jwt_secret_key";
+        String jwtKey = "jwt_secret_key_for_secure_algorithm";
 
         String jwtToken = Jwts.builder()
                 .setSubject(authResult.getName())

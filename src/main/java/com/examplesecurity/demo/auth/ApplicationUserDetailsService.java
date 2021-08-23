@@ -11,13 +11,13 @@ public class ApplicationUserDetailsService implements UserDetailsService {
 
     private final ApplicationUserDao applicationUserDao;
 
-    /*public ApplicationUserDetailsService(@Qualifier("fake") ApplicationUserDao applicationUserDao) {
-        this.applicationUserDao = applicationUserDao;
-    }*/
-
-    public ApplicationUserDetailsService(@Qualifier("test") ApplicationUserDao applicationUserDao) {
+    public ApplicationUserDetailsService(@Qualifier("fake") ApplicationUserDao applicationUserDao) {
         this.applicationUserDao = applicationUserDao;
     }
+
+    /*public ApplicationUserDetailsService(@Qualifier("test") ApplicationUserDao applicationUserDao) {
+        this.applicationUserDao = applicationUserDao;
+    }*/
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
